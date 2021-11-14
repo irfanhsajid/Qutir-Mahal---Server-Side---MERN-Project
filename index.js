@@ -15,9 +15,15 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function run() {
     try {
         await client.connect();
-        const productsCollection = client.db("Qutir-shop").collection("products");
+        const productsCollection = client.db("Qutir-Shop").collection("products");
         const ordersCollection = client.db("Qutir-Shop").collection("orders");
         console.log('database is connected successfully');
+
+        //products api
+        app.get('/products', async (req, res) => {
+            const result = await productsCollection.find({}).toArray();
+            res.send(result);
+        })
     }
     finally {
         // await client.close();
