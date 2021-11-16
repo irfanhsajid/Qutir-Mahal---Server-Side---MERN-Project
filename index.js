@@ -36,9 +36,9 @@ async function run() {
         });
         //get my orders
         app.get('/orders', async (req, res) => {
-            const email = req.params.email;
-            const query = { email: email };
-            const result = await ordersCollection.find(query).toArray();
+            // const email = req.params.email;
+            // const query = { email: email };
+            const result = await ordersCollection.find({}).toArray();
             res.send(result);
         })
         //delete Orders
