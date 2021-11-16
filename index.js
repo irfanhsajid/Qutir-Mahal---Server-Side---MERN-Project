@@ -34,17 +34,27 @@ async function run() {
                 res.send(result.insertedId);
             })
         });
-        //get my orders
+        //get ALL the orders
         app.get('/orders', async (req, res) => {
-            // const email = req.params.email;
-            // const query = { email: email };
             const result = await ordersCollection.find({}).toArray();
+            res.send(result);
+        })
+        //get my filtered orders
+        app.get('/orders/:email', async (req, res) => {
+            const email = req.params.email;
+            const query = { email: email };
+            const result = await ordersCollection.find(query).toArray();
             res.send(result);
         })
         //delete Orders
         app.delete('/deleteOrder/:id', async (req, res) => {
             // console.log(req.params.id);
             const result = await ordersCollection.deleteOne({ _id: ObjectId(req.params.id) });
+            res.send(result);
+        });
+        //delete a Product
+        app.delete('/deleteProduct/:id', async (req, res) => {
+            const result = await productsCollection.deleteOne({ _id: ObjectId(req.params.id) });
             // console.log(result);
             res.send(result);
         });
