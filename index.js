@@ -19,6 +19,7 @@ async function run() {
         const productsCollection = client.db("Qutir-Shop").collection("products");
         const ordersCollection = client.db("Qutir-Shop").collection("orders");
         const usersCollection = client.db("Qutir-Shop").collection("users");
+        const reviewsCollection = client.db("Qutir-Shop").collection("reviews");
         console.log('database is connected successfully');
 
         //products api
@@ -48,14 +49,12 @@ async function run() {
         })
         //delete Orders
         app.delete('/deleteOrder/:id', async (req, res) => {
-            // console.log(req.params.id);
             const result = await ordersCollection.deleteOne({ _id: ObjectId(req.params.id) });
             res.send(result);
         });
         //delete a Product
         app.delete('/deleteProduct/:id', async (req, res) => {
             const result = await productsCollection.deleteOne({ _id: ObjectId(req.params.id) });
-            // console.log(result);
             res.send(result);
         });
 
@@ -74,7 +73,6 @@ async function run() {
         app.post('/users', async (req, res) => {
             const user = req.body;
             const result = await usersCollection.insertOne(user)
-            console.log(result);
             res.send(result);
         })
 
@@ -96,6 +94,26 @@ async function run() {
             const result = await usersCollection.updateOne(filter, updateDoc);
             res.json(result);
         })
+
+        //post user reviews 
+        app.post('/addReview', async (req, res) => {
+            const review = req.body;
+            const result = await reviewsCollection.insertOne(review)
+            res.send(result);
+        });
+        //post user reviews 
+        app.post('/addProduct', async (req, res) => {
+            const product = req.body;
+            const result = await productsCollection.insertOne(product)
+            res.send(result);
+        });
+
+        //get clients review
+        app.get('/reviews', async (req, res) => {
+            const result = await reviewsCollection.find({}).toArray();
+            res.send(result);
+        })
+
 
     }
     finally {
